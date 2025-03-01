@@ -1,6 +1,6 @@
 "use client";
 
-import { userSchema } from "@/schema/userSchema";
+import { userSchema } from "@/schema";
 import { z } from "zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -22,11 +22,12 @@ import {
 } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/select";
-import { SelectValue } from "@radix-ui/react-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { countryList } from "@/utils/countryList";
 import { industryTypesList, roleList } from "@/constants";
 import { Textarea } from "../ui/textarea";
+import { toast } from "sonner";
+import { createUser } from "@/action/user";
 
 interface Props {
   name: string;
@@ -34,7 +35,7 @@ interface Props {
   image?: string;
 }
 
-type UserDataType = z.infer<typeof userSchema>;
+export type UserDataType = z.infer<typeof userSchema>;
 
 const OnboardingForm = ({ name, email, image }: Props) => {
   const [pending, setPending] = useState(false);
@@ -51,7 +52,17 @@ const OnboardingForm = ({ name, email, image }: Props) => {
       industryType: "",
     },
   });
-  const onSubmitForm = async (data: UserDataType) => {};
+  const onSubmitForm = async (data: UserDataType) => {
+    try {
+      setPending(true);
+      await createUser(data);
+
+      toast.success("Profile updated successfully.");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
@@ -179,12 +190,18 @@ const OnboardingForm = ({ name, email, image }: Props) => {
                   <FormItem>
                     <FormLabel>Bio</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Tell us a bit about yourself" {...field} className="resize-none"/>
+                      <Textarea
+                        placeholder="Tell us a bit about yourself"
+                        {...field}
+                        className="resize-none"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={pending} className="w-full">Submit</Button>
+              <Button type="submit" disabled={pending} className="w-full">
+                Submit
+              </Button>
             </form>
           </Form>
         </CardContent>

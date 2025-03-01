@@ -1,7 +1,6 @@
-"use server";
 
 import { userRequired } from "../user/user-auth";
-import { db } from "../../lib/db/prisma";
+import { db } from "../../../lib/db/prisma";
 
 export const getUserWorkspaces = async () => {
   try {
@@ -29,14 +28,14 @@ export const getUserWorkspaces = async () => {
       },
     });
 
-    return {data: workspaces};
+    return { data: workspaces };
   } catch (error) {
     console.log(error);
-    return{
+    return {
       success: false,
       error: true,
       message: "Failed to get user workspaces",
       status: 500,
-    }
+    };
   }
 };
