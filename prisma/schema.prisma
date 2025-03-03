@@ -215,6 +215,7 @@ model Subscription {
   @@index([userId])
 }
 
+
 // Enum Definitions
 enum FileType {
   IMAGE

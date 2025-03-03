@@ -2,12 +2,14 @@ import React from "react";
 import { AppSidebarDataProps } from "./sidebar-container";
 import { User } from "@prisma/client";
 import { ProjectProps, workspaceMemberProps } from "@/types";
-import { Sidebar, SidebarGroupLabel, SidebarHeader } from "../../ui/sidebar";
+import { Sidebar, SidebarContent, SidebarGroupLabel, SidebarHeader } from "../../ui/sidebar";
 import { Avatar, AvatarImage } from "../../ui/avatar";
 import { Button } from "../../ui/button";
 import Link from "next/link";
 import { PlusIcon } from "lucide-react";
 import WorkspaceSelector from "./workspace-selector";
+import MainNavbar from "./main-navbar";
+import NavbarProject from "./navbar-project";
 
 const AppSidebar = ({
   data,
@@ -46,6 +48,13 @@ const AppSidebar = ({
             workspaces={Array.isArray(data.workspaces) ? data.workspaces : []}
           />
         </SidebarHeader>
+        <SidebarContent>
+          <MainNavbar />
+          <NavbarProject 
+          projects={projects}
+          workspaceMembers={workspaceMembers}
+          />
+        </SidebarContent>
       </Sidebar>
     </>
   );
