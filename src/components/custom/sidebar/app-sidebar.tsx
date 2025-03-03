@@ -42,7 +42,9 @@ const AppSidebar = ({
               </Link>
             </Button>
           </div>
-          <WorkspaceSelector workspaces={data.workspaces} />
+          <WorkspaceSelector
+            workspaces={Array.isArray(data.workspaces) ? data.workspaces : []}
+          />
         </SidebarHeader>
       </Sidebar>
     </>

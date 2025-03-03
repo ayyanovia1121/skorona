@@ -43,4 +43,4 @@ export interface WorkspaceProps {
     workspaceId: string;
     accessLevel: $Enums.AccessLevel;
     workspace: { name: string };
-}
+};

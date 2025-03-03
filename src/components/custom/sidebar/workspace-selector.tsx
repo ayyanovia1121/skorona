@@ -30,7 +30,9 @@ const WorkspaceSelector = ({
   >(undefined);
 
   const onSelectedWorkspace = (id: string) => {
-    setSelectedWorkspace(workspaces.find((workspace) => workspace.workspaceId === id));
+    setSelectedWorkspace(
+      workspaces.find((workspace) => workspace.workspaceId === id)
+    );
     router.push(`/workspace/${id}`);
   };
 
