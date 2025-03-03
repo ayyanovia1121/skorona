@@ -35,7 +35,12 @@ export const getWorkspaceProjectsById = async (workspaceId: string) => {
               },
             },
           };
+    
+    // Get the projects and workspace members
+    // Promise.all is used to get the projects and workspace members in parallel
     const [projects, workspaceMembers] = await Promise.all([
+      // Get the projects for the workspace
+      // findMany is used to get the projects
       db.project.findMany({
         where: query,
         select: {
