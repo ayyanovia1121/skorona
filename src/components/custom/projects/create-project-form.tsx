@@ -145,8 +145,12 @@ const CreateProjectForm = ({ workspaceMembers }: Props) => {
                                   }
                                 }}
                               />
-                              <Label htmlFor={member.userId}>
-                                
+                              <Label
+                                htmlFor={member.userId}
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize cursor-pointer"
+                              >
+                                {member.user.name}({""}
+                                {member.accessLevel.toLowerCase()})
                               </Label>
                             </div>
                           ))}
