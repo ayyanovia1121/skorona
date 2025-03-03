@@ -1,13 +1,8 @@
 "use client";
 
+import { createNewProject } from "@/action/project";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
@@ -33,19 +28,22 @@ import { projectSchema } from "@/schema";
 import { workspaceMemberProps } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 interface Props {
   workspaceMembers: workspaceMemberProps[];
 }
 
-type ProjectDataType = z.infer<typeof projectSchema>;
+export type ProjectDataType = z.infer<typeof projectSchema>;
 
 const CreateProjectForm = ({ workspaceMembers }: Props) => {
   const workspaceId = useWorkspaceId();
   const [pending, setPending] = useState(false);
+  const router = useRouter();
   const form = useForm<ProjectDataType>({
     resolver: zodResolver(projectSchema),
     defaultValues: {
@@ -56,7 +54,19 @@ const CreateProjectForm = ({ workspaceMembers }: Props) => {
     },
   });
 
-  const handleSubmit = async (data: ProjectDataType) => {};
+  const handleSubmit = async (data: ProjectDataType) => {
+    try {
+      setPending(true);
+      await createNewProject(data);
+      toast.success("Project created successfully");
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setPending(false);
+    }
+  };
   return (
     <>
       <Dialog>
