@@ -40,8 +40,8 @@ const NavbarProject = ({projects, workspaceMembers}: {
                   href={href}
                   className={
                     pathname === href
-                      ? "text-primary-foreground font-semibold"
-                      : "text-muted-foreground hover:text-primary"
+                      ? "text-amber-700 font-semibold"
+                      : "text-muted-foreground hover:text-amber-700"
                   }
                 >
                   {project.name}
