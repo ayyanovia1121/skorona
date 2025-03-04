@@ -88,7 +88,7 @@ model Project {
 
   // Unique constraint for workspaceId
   // This ensures that a project can only be created once per workspace
-  @@unique([workspaceId])
+  @@index([workspaceId])
 }
 
 model ProjectAccess {

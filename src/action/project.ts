@@ -49,8 +49,8 @@ export const createNewProject = async (data: ProjectDataType) => {
   await db.project.create({
     data: {
       name: validatedData.name,
-      description: validatedData.description,
-      workspaceId: data.workspaceId,
+      description: validatedData.description || "",
+      workspaceId: validatedData.workspaceId,
       projectAccess: {
         create: validatedData.memberAccess?.map((memberId) => ({
           workspaceMemberId: workspaceMembers.find(

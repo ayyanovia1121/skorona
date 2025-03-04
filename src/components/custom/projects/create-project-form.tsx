@@ -58,6 +58,7 @@ const CreateProjectForm = ({ workspaceMembers }: Props) => {
     try {
       setPending(true);
       await createNewProject(data);
+      // form.reset();
       toast.success("Project created successfully");
       router.refresh();
     } catch (error) {
@@ -75,7 +76,7 @@ const CreateProjectForm = ({ workspaceMembers }: Props) => {
             <Plus />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px]" >
           <Card className="w-full max-w-md">
             <DialogHeader>
               <DialogTitle>Create New Project</DialogTitle>
