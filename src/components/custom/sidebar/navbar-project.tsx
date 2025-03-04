@@ -21,29 +21,34 @@ const NavbarProject = ({projects, workspaceMembers}: {
 
   return (
     <>
-      <SidebarGroup className="group-data-[collapsed=icon]:hidden">
+      <SidebarGroup className="group-data-[collapsible=icon]:hidden">
         <SidebarGroupLabel className="flex justify-between">
-          <span className="text-sm font-semibold mb-2 text-muted-foreground uppercase">
+          <span className="text-sm font-semibold  text-muted-foreground uppercase">
             Projects
           </span>
+          <CreateProjectForm workspaceMembers={workspaceMembers} />
         </SidebarGroupLabel>
-
-        <CreateProjectForm workspaceMembers={workspaceMembers}/>
       </SidebarGroup>
 
       <SidebarMenu className="space-y-3">
         {projects?.map((project) => {
-            const href = `/workspace/${project.workspaceId}/projects/${project.id}`;
-            return (
-                <SidebarMenuItem key={project.id}>
-                    <SidebarMenuButton>
-                        <a href={href}
-                        className={pathname === href ? "text-primary-foreground font-semibold" : "text-muted-foreground hover:text-primary-foreground"}>
-                            {project.name}
-                        </a>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
-            )
+          const href = `/workspace/${project.workspaceId}/projects/${project.id}`;
+          return (
+            <SidebarMenuItem key={project.id}>
+              <SidebarMenuButton>
+                <a
+                  href={href}
+                  className={
+                    pathname === href
+                      ? "text-primary-foreground font-semibold"
+                      : "text-muted-foreground hover:text-primary"
+                  }
+                >
+                  {project.name}
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          );
         })}
       </SidebarMenu>
     </>
