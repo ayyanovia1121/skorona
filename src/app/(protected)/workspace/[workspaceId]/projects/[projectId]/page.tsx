@@ -1,11 +1,14 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
-
-const ProjectByIdPage = (props: Props) => {
-  return (
-    <div>ProjectByIdPage</div>
-  )
+interface ProjectPageProps {
+  params: Promise<{ workspaceId: string; projectId: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
+const ProjectPage = async(props: ProjectPageProps) => {
+    const { workspaceId, projectId } = await props.params;
+    const searchParams = await props.searchParams;
+    
+  return <div>ProjectByIdPage</div>;
+};
 
-export default ProjectByIdPage
+export default ProjectPage;
