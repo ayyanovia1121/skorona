@@ -1,3 +1,4 @@
+import ProjectDashboard from "@/components/custom/projects/project-dashboard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import React from "react";
@@ -35,7 +36,13 @@ const ProjectPage = async (props: ProjectPageProps) => {
         </TabsList>
 
         <TabsContent value="dashboard">
-          <p>Dashboard</p>
+          <ProjectDashboard 
+          project={project} 
+          tasks={tasks}
+          activities={activities}
+          totalWorkspaceMembers={totalWorkspaceMembers}
+          comments={comments}
+           />
         </TabsContent>
         <TabsContent value="table">
           <p>Table</p>
