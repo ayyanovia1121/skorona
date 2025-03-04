@@ -2,7 +2,7 @@ import { ProjectProps } from '@/types'
 import ProjectAvatar from './project-avatar'
 
 
-const ProjectHeader = (project:ProjectProps) => {
+const ProjectHeader = ({project}:{project:ProjectProps}) => {
   return (
     <div className='space-y-4'>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
