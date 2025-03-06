@@ -1,4 +1,12 @@
 {
   "WillLuke.nextjs.hasPrompted": true,
-  "conventionalCommits.scopes": ["project", "database", "schema", "ui", "deps"]
+  "conventionalCommits.scopes": [
+    "project",
+    "database",
+    "schema",
+    "ui",
+    "deps",
+    "constants",
+    "action"
+  ]
 }

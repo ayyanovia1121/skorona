@@ -8,7 +8,7 @@ import { userRequired } from "@/utils/auth/user/user-auth";
 export const createNewTask = async (
   data: TaskFormValues,
   projectId: string,
-  workspaceId: string
+  workspaceId: string 
 ) => {
   const { user } = await userRequired();
   const validatedData = taskFormSchema.parse(data);
@@ -26,16 +26,14 @@ export const createNewTask = async (
   }
 
   const tasks = await db.task.findMany({
-    where: {projectId},
+    where: { projectId },
   });
 
-  const lastTask = tasks
-    ?.filter((task) => task.status === data.status)
-    .sort((a, b) => b.position - a.position)[0];
+const lastTask = tasks
+  ?.filter((task) => task.status === data.status)
+  .sort((a, b) => b.position - a.position)[0];
 
-    const position = lastTask ? lastTask.position + 1000 : 1000;
-
-  
+const position = lastTask ? lastTask.position + 1000 : 1000;
 
   const task = await db.task.create({
     data: {
@@ -44,7 +42,7 @@ export const createNewTask = async (
       startDate: new Date(validatedData.startDate),
       dueDate: new Date(validatedData.dueDate),
       projectId,
-      assigneeId: validatedData.assigneeId,
+      assigneeId: validatedData.assigneeId || null,
       status: validatedData.status,
       priority: validatedData.priority,
       position,
@@ -54,14 +52,16 @@ export const createNewTask = async (
     },
   });
 
+
+
   await db.activity.create({
     data: {
       type: "TASK_CREATED",
       description: `Task created: ${validatedData.title}`,
       projectId,
       userId: user.id,
-    }
+    },
   });
 
-  return {success: true};
+  return { success: true };
 };

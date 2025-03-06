@@ -35,9 +35,7 @@ export const projectSchema = z.object({
 });
 
 export const taskFormSchema = z.object({
-  title: z
-    .string()
-    .min(2, { message: "Task title is required and must be at least 2 characters" }),
+  title: z.string().min(2, { message: "Task title is required" }),
   description: z.string().optional(),
   assigneeId: z.string().optional(),
   status: z.enum([
@@ -50,7 +48,7 @@ export const taskFormSchema = z.object({
   ]),
   dueDate: z.date(),
   startDate: z.date(),
-  priority: z.enum(["LOW", "MEDIUM", "HIGH","CRITICAL"]),
+  priority: z.enum(["LOW", "MEDIUM", "HIGH","URGENT"]),
   attachments: z.array(
     z.object({
       name: z.string(),
