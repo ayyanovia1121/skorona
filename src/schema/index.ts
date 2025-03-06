@@ -51,7 +51,7 @@ export const taskFormSchema = z.object({
   dueDate: z.date(),
   startDate: z.date(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH","CRITICAL"]),
-  attachment: z.array(
+  attachments: z.array(
     z.object({
       name: z.string(),
       url: z.string(),
