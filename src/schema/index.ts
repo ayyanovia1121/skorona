@@ -33,3 +33,29 @@ export const projectSchema = z.object({
   workspaceId: z.string(),
   memberAccess: z.array(z.string()).optional(),
 });
+
+export const taskFormSchema = z.object({
+  title: z
+    .string()
+    .min(2, { message: "Task title is required and must be at least 2 characters" }),
+  description: z.string().optional(),
+  assigneeId: z.string().optional(),
+  status: z.enum([
+    "TODO",
+    "IN_PROGRESS",
+    "COMPLETED",
+    "BLOCKED",
+    "BACKLOG",
+    "IN_REVIEW",
+  ]),
+  dueDate: z.date(),
+  startDate: z.date(),
+  priority: z.enum(["LOW", "MEDIUM", "HIGH","CRITICAL"]),
+  attachment: z.array(
+    z.object({
+      name: z.string(),
+      url: z.string(),
+      type: z.enum(["IMAGE", "PDF"]),
+    })
+  ).optional(),
+});
