@@ -4,6 +4,8 @@ import React from "react";
 import ProjectHeader from "./project-header";
 import { Card } from "@/components/ui/card";
 import TaskDistributionChart from "./task-distribution-chart";
+import ActivityFeed from "./activity-feed";
+import CommentList from "./comment-list";
 
 interface ProjectDashboardProps {
   project: ProjectProps;
@@ -37,11 +39,11 @@ const ProjectDashboard = ({
           <TaskDistributionChart tasks={tasks} />
           <Card>
             <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
-            {/* <ActivityFeed activities={activities} /> */}
+            <ActivityFeed activities={activities.slice(0, 5) as any} />
           </Card>
           <Card>
             <h3 className="text-lg font-semibold mb-4">Recent Comments</h3>
-            {/* <CommentList comments={comments} /> */}
+            <CommentList comments={comments.slice(0, 5) as any} />
           </Card>
         </div>
       </div>

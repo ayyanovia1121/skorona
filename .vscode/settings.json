@@ -9,6 +9,7 @@
     "constants",
     "action",
     "task",
-    "activity"
+    "activity",
+    "comment"
   ]
 }
