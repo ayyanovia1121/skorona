@@ -22,8 +22,9 @@ const ProfileAvatar = ({
         size === "lg" && "h-10 w-10",
         className
     )}>
-        <AvatarImage src={url} alt={name} />
-        <AvatarFallback>
+        <AvatarImage src={url || undefined} alt={name} />
+
+        <AvatarFallback className="bg-amber-600 text-base text-white rounded-md">
             {name.substring(0, numOfChars).toUpperCase()}
         </AvatarFallback>
     </Avatar>
