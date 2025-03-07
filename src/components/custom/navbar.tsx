@@ -4,6 +4,7 @@ import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { ThemeToggle } from "./theme-toggle";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import ProfileAvatar from "./global/profile-avatar";
+import { Separator } from "../ui/separator";
 
 interface Props {
   id: string;
@@ -30,12 +31,13 @@ const Navbar = ({ id, name, email, image }: Props) => {
           <PopoverTrigger asChild>
             <ProfileAvatar name={name} url={image || undefined} />
           </PopoverTrigger>
-          <PopoverContent>
-            <div className="mb-4">
-              <h2>{name}</h2>
-              <p>{email}</p>
+          <PopoverContent className="flex flex-col items-center gap-3">
+            <div className="mb-4 w-full flex flex-col items-center justify-between">
+              <h2 className="font-medium text-lg">{name}</h2>
+              <p className="text-sm text-muted-foreground">{email}</p>
             </div>
-            <Button variant={"ghost"}>
+            <Separator />
+            <Button variant={"ghost"} className="w-full">
               <LogoutLink>Sign Out</LogoutLink>
             </Button>
           </PopoverContent>
