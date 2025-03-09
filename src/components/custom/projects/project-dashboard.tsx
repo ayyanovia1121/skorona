@@ -69,11 +69,11 @@ const ProjectDashboard = ({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <TaskDistributionChart tasks={tasks} />
-          <Card>
+          <Card className="p-4">
             <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
             <ActivityFeed activities={activities.slice(0, 5) as any} />
           </Card>
-          <Card>
+          <Card className="p-4">
             <h3 className="text-lg font-semibold mb-4">Recent Comments</h3>
             <CommentList comments={comments.slice(0, 5) as any} />
           </Card>
