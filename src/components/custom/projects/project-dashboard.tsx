@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import TaskDistributionChart from "./task-distribution-chart";
 import ActivityFeed from "./activity-feed";
 import CommentList from "./comment-list";
+import CircleProgress from "./circle-progress";
 
 interface ProjectDashboardProps {
   project: ProjectProps;
@@ -31,9 +32,40 @@ const ProjectDashboard = ({
     <>
       <div className="flex flex-col gap-6 px-2 md:px-4 2xl:px-6 py-0">
         <ProjectHeader project={project as unknown as ProjectProps} />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {/* Progress Circle */}
-          <Card></Card>
+          <Card className="p-4">
+            <CircleProgress
+              title="Task Completed"
+              value={(tasks.completed / tasks.total) * 100}
+              subtitle={`${tasks.completed}/${tasks.total} tasks`}
+              variant="success"
+            />
+          </Card>
+          <Card className="p-4">
+            <CircleProgress
+              title="In Progress"
+              value={(tasks.inProgress / tasks.total) * 100}
+              subtitle={`${tasks.inProgress} tasks on going`}
+              variant="inProgress"
+            />
+          </Card>
+          <Card className="p-4">
+            <CircleProgress
+              title="Overdue"
+              value={(tasks.overDue / tasks.total) * 100}
+              subtitle={`${tasks.overDue} overdue tasks`}
+              variant="warning"
+            />
+          </Card>
+          <Card className="p-4">
+            <CircleProgress
+              title="Team Members"
+              value={project.members.length}
+              subtitle={`${project.members.length} members`}
+              variant="default"
+            />
+          </Card>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <TaskDistributionChart tasks={tasks} />
