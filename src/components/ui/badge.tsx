@@ -17,13 +17,26 @@ const badgeVariants = cva(
           "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+        OWNER: "bg-pink-600 text-white",
+        MEMBER: "bg-blue-600 text-white",
+        VIEWER: "bg-gray-600 text-white",
+        TODO: "bg-blue-600 text-white",
+        IN_PROGRESS: "bg-yellow-600 text-white",
+        BACKLOG: "bg-pink-600 text-white",
+        IN_REVIEW: "bg-purple-600 text-white",
+        COMPLETED: "bg-green-600 text-white",
+        BLOCKED: "bg-red-600 text-white",
+        CRITICAL: "bg-red-600 text-white",
+        HIGH: "bg-orange-600 text-white",
+        MEDIUM: "bg-yellow-600 text-white",
+        LOW: "bg-blue-600 text-white",
       },
     },
     defaultVariants: {
       variant: "default",
     },
   }
-)
+);
 
 function Badge({
   className,
