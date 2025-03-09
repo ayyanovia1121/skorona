@@ -1,3 +1,4 @@
+'use client'
 import { File, Project, Task, User } from '@prisma/client'
 import React from 'react'
 import { DataTable } from '../datatable/data-table';
