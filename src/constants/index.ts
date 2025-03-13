@@ -50,4 +50,19 @@ export const taskStatusList = [
     label: "BACKLOG",
     color: "bg-gray-500",
   },
+  {
+    status: TaskStatus.IN_REVIEW,
+    label: "IN REVIEW",
+    color: "bg-blue-500",
+  },
 ];
+
+export const taskStatusVariant = {
+  [TaskStatus.BLOCKED]: "#ef4444", // Red
+  [TaskStatus.TODO]: "#6366f1", // Blue
+  [TaskStatus.IN_PROGRESS]: "#f59e0b", // Orange
+  [TaskStatus.COMPLETED]: "#10b981", // Green
+  [TaskStatus.BACKLOG]: "#ec4899", // Pink
+  [TaskStatus.IN_REVIEW]: "#a855f7", // Purple
+  default: "#6366f1", // Default Blue
+};
