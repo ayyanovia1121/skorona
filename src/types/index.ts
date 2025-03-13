@@ -1,4 +1,4 @@
-import { $Enums, AccessLevel, Comment, Task, WorkspaceMember } from "@prisma/client";
+import { $Enums, AccessLevel, Comment, Task, TaskStatus, WorkspaceMember } from "@prisma/client";
 
 export interface workspaceMemberProps extends WorkspaceMember {
     user: {
@@ -60,4 +60,10 @@ export interface ProjectTaskProps extends Task {
         image?: string;
     };
     project: {id: string; name: string};
+}
+
+export interface Column {
+    id: TaskStatus;
+    title: string;
+    tasks: ProjectTaskProps[];
 }
