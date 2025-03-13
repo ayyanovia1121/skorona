@@ -71,12 +71,23 @@ const ProjectKanban = ({
 
             {/* Tasks */}
             <Droppable droppableId={column.id} key={column.id}>
-              {(droppableProvided) => (
-                <ProjectCard
-                  ref={droppableProvided.innerRef}
-                  provider={droppableProvided}
-                  task={task}
-                />
+              {(provided) => (
+                <div 
+                {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="flex-1 rounded-lg p-2">
+                  {column.tasks.map((task, index) => (
+                    <Draggable key={task.id} draggableId={task.id} index={index}>
+                      {(provided) => (
+                        <ProjectCard
+                          ref={provided.innerRef}
+                          provided={provided}
+                          task={task}
+                        />
+                      )}
+                    </Draggable>
+                  ))}
+                </div>
               )}
             </Droppable>
           </div>
