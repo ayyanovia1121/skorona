@@ -1,3 +1,5 @@
+'use client';
+
 import { Card } from "@/components/ui/card";
 import { useProjectId } from "@/hooks/use-project-id";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
@@ -45,11 +47,11 @@ const ProjectCard = ({ ref, task, provided }: DataProps) => {
       <div className="flex items-center gap-2 mt-2">
         <ProfileAvatar
           url={task.assignedTo?.image}
-          name={task.assignedTo?.name}
+          name={task.assignedTo?.name || "Unassigned"}
           className="!size-6"
         />
         <p className="text-sm text-muted-foreground mt-1 line-clamp-3">
-          {task.assignedTo?.name}
+          {task.assignedTo?.name || "Unassigned"}
         </p>
       </div>
     </Card>
