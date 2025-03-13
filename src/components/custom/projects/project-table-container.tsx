@@ -6,7 +6,7 @@ const ProjectTableContainer = async ({ projectId }: { projectId: string }) => {
   const { tasks } = await getProjectById(projectId);
 
   return (
-    <div className="p-4">
+    <div className="p-0">
       <ProjectTable tasks={tasks as any} />
     </div>
   );
