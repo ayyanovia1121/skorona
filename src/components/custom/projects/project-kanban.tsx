@@ -3,8 +3,13 @@
 import { Column, ProjectTaskProps } from "@/types";
 import { $Enums, TaskStatus } from "@prisma/client";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import { useCallback, useEffect, useState } from "react";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import { taskStatusVariant } from "@/constants";
 import { Separator } from "@/components/ui/separator";
@@ -44,7 +49,39 @@ const ProjectKanban = ({
     setColumns(initialColumns);
   }, [initialTask]);
 
-  const onDragEnd = () => {};
+  const onDragEnd = () =>
+    useCallback(
+      async (result: DropResult) => {
+        const { destination, source } = result;
+
+        if (!destination) return;
+        
+        const newColumns = [...columns];
+        const sourceColumn = newColumns.find(
+          (col) => col.id === source.droppableId
+        );
+        const destinationColumn = newColumns.find(
+          (col) => col.id === destination.droppableId
+        );
+        if (!sourceColumn || !destinationColumn) return;
+
+        const [moveTask] = sourceColumn.tasks.splice(source.index, 1);
+        const destinationTask = destinationColumn.tasks;
+
+        let newPosition: number;
+
+        if (destinationTask.length === 0) {
+          newPosition = 1000;
+        } else if (destination.index === 0) {
+          newPosition = destinationTask[0].position - 1000;
+        } else if(destination.index === destinationTask.length ) {
+          newPosition = destinationTask[destinationTask.length - 1].position + 1000;
+        }else {
+          newPosition = destinationTask[destination.index - 1].position + destinationTask[destination.index].position / 2; 
+        }
+      },
+      [columns]
+    );
 
   return (
     <div className="flex gap-4 h-full md:px-4 overflow-x-auto">
@@ -72,12 +109,17 @@ const ProjectKanban = ({
             {/* Tasks */}
             <Droppable droppableId={column.id} key={column.id}>
               {(provided) => (
-                <div 
-                {...provided.droppableProps}
+                <div
+                  {...provided.droppableProps}
                   ref={provided.innerRef}
-                  className="flex-1 rounded-lg p-2">
+                  className="flex-1 rounded-lg p-2"
+                >
                   {column.tasks.map((task, index) => (
-                    <Draggable key={task.id} draggableId={task.id} index={index}>
+                    <Draggable
+                      key={task.id}
+                      draggableId={task.id}
+                      index={index}
+                    >
                       {(provided) => (
                         <ProjectCard
                           ref={provided.innerRef}
