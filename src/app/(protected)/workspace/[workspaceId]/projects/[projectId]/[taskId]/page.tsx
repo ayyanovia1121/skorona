@@ -1,8 +1,8 @@
+import TaskComment from '@/components/custom/task/task-comment'
 import TaskDetails from '@/components/custom/task/task-details'
 import { userRequired } from '@/utils/auth/user/user-auth'
 import { getTaskById } from '@/utils/data/task/get-task-by-id'
 import { redirect } from 'next/navigation'
-import React from 'react'
 
 interface PageProps {
     params: Promise<{
@@ -26,7 +26,7 @@ const TaskDetailPage = async({params}: PageProps) => {
             <TaskDetails task={task as any} />
         </div>
         <div className="w-full lg:w-[400px]">
-
+            <TaskComment taskId={taskId} comments={comments}/>
         </div>
     </div>
   )
