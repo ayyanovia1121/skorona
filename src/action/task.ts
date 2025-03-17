@@ -72,8 +72,10 @@ export const updateTaskPosition = async (
 ) => {
   await userRequired();
 
-  return await db.task.update({
+  const task = await db.task.update({
     where: { id: taskId },
     data: { position: newPosition, status },
   });
+
+  return task
 };
