@@ -2,7 +2,7 @@
 
 import { Column, ProjectTaskProps } from "@/types";
 import { $Enums, TaskStatus } from "@prisma/client";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import {
   DragDropContext,
@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { taskStatusVariant } from "@/constants";
 import { Separator } from "@/components/ui/separator";
 import ProjectCard from "./project-card";
+import { updateTaskPosition } from "@/action/task";
 
 const COLUMN_TITLES: Record<$Enums.TaskStatus, string> = {
   TODO: "To Do",
@@ -29,7 +30,7 @@ const ProjectKanban = ({
 }: {
   initialTask: ProjectTaskProps[];
 }) => {
-  //   const router = useRouter();
+  const router = useRouter();
 
   if (initialTask.length === 0) return null;
 
@@ -49,53 +50,60 @@ const ProjectKanban = ({
     setColumns(initialColumns);
   }, [initialTask]);
 
-  const onDragEnd = () =>
-    useCallback(
-      async (result: DropResult) => {
-        const { destination, source } = result;
+  const onDragEnd = useCallback(
+    async (result: DropResult) => {
+      const { destination, source } = result;
 
-        if (!destination) return;
+      if (!destination) return;
 
-        const newColumns = [...columns];
-        const sourceColumn = newColumns.find(
-          (col) => col.id === source.droppableId
+      const newColumns = [...columns];
+      const sourceColumn = newColumns.find(
+        (col) => col.id === source.droppableId
+      );
+      const destinationColumn = newColumns.find(
+        (col) => col.id === destination.droppableId
+      );
+      if (!sourceColumn || !destinationColumn) return;
+
+      const [movedTask] = sourceColumn.tasks.splice(source.index, 1);
+      const destinationTask = destinationColumn.tasks;
+
+      let newPosition: number;
+
+      if (destinationTask.length === 0) {
+        newPosition = 1000;
+      } else if (destination.index === 0) {
+        newPosition = destinationTask[0].position - 1000;
+      } else if (destination.index === destinationTask.length) {
+        newPosition =
+          destinationTask[destinationTask.length - 1].position + 1000;
+      } else {
+        newPosition =
+          destinationTask[destination.index - 1].position +
+          destinationTask[destination.index].position / 2;
+      }
+
+      const updatedTask = {
+        ...movedTask,
+        position: newPosition,
+        status: destination.droppableId as TaskStatus,
+      };
+
+      destinationColumn.tasks.splice(destination.index, 0, updatedTask);
+      setColumns(newColumns);
+
+      try {
+        await updateTaskPosition(
+          movedTask.id,
+          newPosition,
+          destination.droppableId as TaskStatus
         );
-        const destinationColumn = newColumns.find(
-          (col) => col.id === destination.droppableId
-        );
-        if (!sourceColumn || !destinationColumn) return;
 
-        const [movedTask] = sourceColumn.tasks.splice(source.index, 1);
-        const destinationTask = destinationColumn.tasks;
-
-        let newPosition: number;
-
-        if (destinationTask.length === 0) {
-          newPosition = 1000;
-        } else if (destination.index === 0) {
-          newPosition = destinationTask[0].position - 1000;
-        } else if (destination.index === destinationTask.length) {
-          newPosition =
-            destinationTask[destinationTask.length - 1].position + 1000;
-        } else {
-          newPosition =
-            destinationTask[destination.index - 1].position +
-            destinationTask[destination.index].position / 2;
-        }
-
-        const updatedTask = {
-          ...movedTask,
-          position: newPosition,
-          status: destination.droppableId as TaskStatus,
-        };
-
-        destinationColumn.tasks.splice(destination.index, 0, updatedTask);
-        setColumns(newColumns);
-
-        
-      },
-      [columns]
-    );
+        router.refresh();
+      } catch (error) {}
+    },
+    [columns]
+  );
 
   return (
     <div className="flex gap-4 h-full md:px-4 overflow-x-auto">
