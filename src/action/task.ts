@@ -4,11 +4,12 @@ import { TaskFormValues } from "@/components/custom/task/create-task-dialog";
 import { db } from "@/lib/db/prisma";
 import { taskFormSchema } from "@/schema";
 import { userRequired } from "@/utils/auth/user/user-auth";
+import { TaskStatus } from "@prisma/client";
 
 export const createNewTask = async (
   data: TaskFormValues,
   projectId: string,
-  workspaceId: string 
+  workspaceId: string
 ) => {
   const { user } = await userRequired();
   const validatedData = taskFormSchema.parse(data);
@@ -29,11 +30,11 @@ export const createNewTask = async (
     where: { projectId },
   });
 
-const lastTask = tasks
-  ?.filter((task) => task.status === data.status)
-  .sort((a, b) => b.position - a.position)[0];
+  const lastTask = tasks
+    ?.filter((task) => task.status === data.status)
+    .sort((a, b) => b.position - a.position)[0];
 
-const position = lastTask ? lastTask.position + 1000 : 1000;
+  const position = lastTask ? lastTask.position + 1000 : 1000;
 
   const task = await db.task.create({
     data: {
@@ -52,8 +53,6 @@ const position = lastTask ? lastTask.position + 1000 : 1000;
     },
   });
 
-
-
   await db.activity.create({
     data: {
       type: "TASK_CREATED",
@@ -64,4 +63,17 @@ const position = lastTask ? lastTask.position + 1000 : 1000;
   });
 
   return { success: true };
+};
+
+export const updateTaskPosition = async (
+  taskId: string,
+  newPosition: number,
+  status: TaskStatus
+) => {
+  await userRequired();
+
+  return await db.task.update({
+    where: { id: taskId },
+    data: { position: newPosition, status },
+  });
 };
