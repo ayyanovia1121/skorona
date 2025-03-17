@@ -18,7 +18,7 @@ export interface workspaceMemberProps extends WorkspaceMember {
 export interface ProjectProps {
     id: string;
     name: string;
-    description: string | null;
+    description?: string | null;
     workspaceId: string;
     members: {
         id: string;
