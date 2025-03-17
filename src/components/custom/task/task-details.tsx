@@ -3,6 +3,7 @@ import { ProjectProps } from "@/types";
 import { Task, User } from "@prisma/client";
 import React from "react";
 import ProjectAvatar from "../projects/project-avatar";
+import ProfileAvatar from "../global/profile-avatar";
 
 interface TaskProps {
   task: Task & {
@@ -25,7 +26,19 @@ const TaskDetails = ({ task }: TaskProps) => {
           </div>
         </div>
         <div className="w-full md:w-auto flex flex-col justify-end items-end gap-2">
-            
+          {/* <EditTaskDialog 
+            key={new Date().getTime()}
+             task={task} 
+             project={task?.project}
+             /> */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Assigned To: </span>
+            <ProfileAvatar
+              url={task.assignedTo?.image || undefined}
+              name={task.assignedTo?.name || "unassigned"}
+            />
+            <span className="text-sm font-medium">{task.assignedTo?.name}</span>
+          </div>
         </div>
       </CardHeader>
     </Card>
