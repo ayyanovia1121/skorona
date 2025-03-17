@@ -55,7 +55,7 @@ const ProjectKanban = ({
         const { destination, source } = result;
 
         if (!destination) return;
-        
+
         const newColumns = [...columns];
         const sourceColumn = newColumns.find(
           (col) => col.id === source.droppableId
@@ -65,7 +65,7 @@ const ProjectKanban = ({
         );
         if (!sourceColumn || !destinationColumn) return;
 
-        const [moveTask] = sourceColumn.tasks.splice(source.index, 1);
+        const [movedTask] = sourceColumn.tasks.splice(source.index, 1);
         const destinationTask = destinationColumn.tasks;
 
         let newPosition: number;
@@ -74,11 +74,25 @@ const ProjectKanban = ({
           newPosition = 1000;
         } else if (destination.index === 0) {
           newPosition = destinationTask[0].position - 1000;
-        } else if(destination.index === destinationTask.length ) {
-          newPosition = destinationTask[destinationTask.length - 1].position + 1000;
-        }else {
-          newPosition = destinationTask[destination.index - 1].position + destinationTask[destination.index].position / 2; 
+        } else if (destination.index === destinationTask.length) {
+          newPosition =
+            destinationTask[destinationTask.length - 1].position + 1000;
+        } else {
+          newPosition =
+            destinationTask[destination.index - 1].position +
+            destinationTask[destination.index].position / 2;
         }
+
+        const updatedTask = {
+          ...movedTask,
+          position: newPosition,
+          status: destination.droppableId as TaskStatus,
+        };
+
+        destinationColumn.tasks.splice(destination.index, 0, updatedTask);
+        setColumns(newColumns);
+
+        
       },
       [columns]
     );
