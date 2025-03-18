@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import Image from "next/image";
+import EditTaskDialog from "./edit-task-dialog";
 
 interface TaskProps {
   task: Task & {
@@ -31,11 +32,11 @@ const TaskDetails = ({ task }: TaskProps) => {
           </div>
         </div>
         <div className="w-full md:w-auto flex flex-col justify-end items-end gap-2">
-          {/* <EditTaskDialog 
+          <EditTaskDialog 
             key={new Date().getTime()}
              task={task} 
              project={task?.project}
-             /> */}
+             />
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">Assigned To: </span>
             <ProfileAvatar
