@@ -21,12 +21,12 @@ const TaskDetailPage = async({params}: PageProps) => {
     if(!task) redirect("/not-found");
 
   return (
-    <div className='flex flex-col lg:row-row gap-6 md:px-6 pb-6'>
+    <div className='flex flex-col lg:flex-row gap-6 md:px-6 pb-6'>
         <div className="flex-1">
             <TaskDetails task={task as any} />
         </div>
         <div className="w-full lg:w-[400px]">
-            <TaskComment taskId={taskId} comments={comments}/>
+            <TaskComment taskId={taskId} comments={comments as any}/>
         </div>
     </div>
   )
