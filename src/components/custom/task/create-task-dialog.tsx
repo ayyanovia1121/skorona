@@ -90,7 +90,7 @@ const CreateTaskDialog = ({ project }: Props) => {
       <DialogTrigger asChild>
         <Button onClick={() => setOpen(true)}>Create Task</Button>
       </DialogTrigger>
-      <DialogContent aria-describedby={undefined}>
+      <DialogContent aria-describedby={undefined} className="overflow-y-auto max-h-[80vh]">
         <DialogHeader>
           <DialogTitle>Create Task</DialogTitle>
         </DialogHeader>
