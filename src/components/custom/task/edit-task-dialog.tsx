@@ -92,7 +92,7 @@ const EditTaskDialog = ({ task, project }: Props) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}>
+        <Button onClick={() => setOpen(true)} variant="outline">
           <PencilIcon className="h-5 w-5" />
           Edit Task
         </Button>
