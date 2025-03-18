@@ -1,6 +1,5 @@
 import { db } from "@/lib/db/prisma";
 import { userRequired } from "@/utils/auth/user/user-auth";
-import { access } from "fs";
 
 export const getTaskById = async (
   taskId: string,
