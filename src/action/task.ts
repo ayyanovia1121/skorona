@@ -79,3 +79,62 @@ export const updateTaskPosition = async (
 
   return task
 };
+
+export const updateTask = async (
+  taskId: string,
+  data: TaskFormValues,
+  projectId: string,
+  workspaceId: string
+) => {
+  const { user } = await userRequired();
+  const validatedData = taskFormSchema.parse(data);
+  const isUserMember = await db.workspaceMember.findUnique({
+    where: {
+      userId_workspaceId: {
+        userId: user.id,
+        workspaceId,
+      },
+    },
+  });
+
+  if (!isUserMember) {
+    throw new Error("You are not a member of this workspace");
+  }
+
+  const projectAccess = await db.projectAccess.findUnique({
+    where: {
+      workspaceMemberId_projectId: {
+        workspaceMemberId: isUserMember.id,
+        projectId,
+      },
+    },
+  });
+
+  if (!projectAccess) {
+    throw new Error("You do not have access to this project");
+  }
+
+  const task = await db.task.update({
+    where: { id: taskId },
+    data: {
+      title: validatedData.title,
+      description: validatedData.description,
+      startDate: new Date(validatedData.startDate),
+      dueDate: new Date(validatedData.dueDate),
+      assigneeId: validatedData.assigneeId || null,
+      status: validatedData.status,
+      priority: validatedData.priority,
+    }
+  });
+
+  await db.activity.create({
+    data: {
+      type: "TASK_CREATED",
+      description: `Task updated: ${validatedData.title}`,
+      projectId,
+      userId: user.id,
+    },
+  });
+
+  return { success: true };
+};
