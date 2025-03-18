@@ -31,7 +31,7 @@ import { taskFormSchema } from "@/schema";
 import { ProjectProps } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskPriority } from "@prisma/client";
-import { Calendar1Icon } from "lucide-react";
+import { Calendar1Icon, FileUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -42,6 +42,7 @@ import { taskStatusList } from "@/constants";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { createNewTask } from "@/action/task";
+import FileUpload from "../file-upload";
 
 interface Props {
   project: ProjectProps;
@@ -291,6 +292,23 @@ const CreateTaskDialog = ({ project }: Props) => {
                       {...field}
                       rows={4}
                       placeholder="Add your description..."
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="attachments"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>File Attachments</FormLabel>
+                  <FormControl>
+                    <FileUpload 
+                    value={field.value || []}
+                    onChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
