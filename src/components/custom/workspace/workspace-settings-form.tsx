@@ -11,6 +11,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { CreateWorkspaceDataType } from "./create-workspace-form";
+import { toast } from "sonner";
+import { updateWorkspace } from "@/action/workspace";
 
 interface DataProps extends Workspace {
   members: {
@@ -26,7 +29,7 @@ const WorkspaceSettingsForm = ({ data }: { data: DataProps }) => {
 //   const { isOpen, handleConfirm, handleCancel, confirmationOptions } =
   const [inviteEmail, setInviteEmail] = useState(false);
 
-  const form = useForm<z.infer<typeof workspaceSchema>>({
+  const form = useForm<CreateWorkspaceDataType>({
     resolver: zodResolver(workspaceSchema),
     defaultValues: {
       name: data.name,
@@ -36,8 +39,22 @@ const WorkspaceSettingsForm = ({ data }: { data: DataProps }) => {
 
   const inviteLink = `${process.env.NEXT_PUBLIC_BASE_URL}/workspace-invite/${data.id}/join/${data.inviteCode}`;
 
-  const handleOnSubmit = async() => {
-      
+  const handleOnSubmit = async(values: CreateWorkspaceDataType) => {
+     try {
+        setIsPending(true);
+        await updateWorkspace(data.id, values);
+
+        toast.success("Workspace updated successfully.");
+        router.refresh();
+     } catch (error) {
+        if(error instanceof Error && error.message !== "NEXT_REDIRECT") {
+           toast.error(
+            error instanceof Error ? error.message : "Something went wrong. Please try again."
+           );
+        }
+     }finally {
+        setIsPending(false);
+     }
   }
   return (
     <div className="p-3 md:p-6 max-w-4xl w-full mx-auto space-y-6">
@@ -87,7 +104,7 @@ const WorkspaceSettingsForm = ({ data }: { data: DataProps }) => {
                   </FormItem>
                 )}
               />
-              <div className="flex justify-end gap-4 justify-end">
+              <div className="flex gap-4 justify-end">
                 <Button type="submit" disabled={isPending}>
                   Save
                 </Button>
