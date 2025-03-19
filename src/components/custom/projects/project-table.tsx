@@ -4,7 +4,7 @@ import React from 'react'
 import { DataTable } from '../datatable/data-table';
 import { columns, myTaskColumns } from './column';
 
-interface TaskProps extends Task {
+export interface TaskProps extends Task {
     assignedTo: User;
     project: Project;
     attachments: File[];
