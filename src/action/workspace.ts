@@ -63,3 +63,28 @@ export const updateWorkspace = async (workspaceId: string, data: CreateWorkspace
 
     return {success: true};
 }
+
+export const resetWorkspaceInviteCode = async (workspaceId: string) => {
+   const { user } = await userRequired();
+   const isUserMember = await db.workspaceMember.findUnique({
+     where: {
+       userId_workspaceId: {
+         userId: user.id,
+         workspaceId,
+       },
+     },
+   });
+
+   if (!isUserMember) {
+     throw new Error("You are not a member of this workspace");
+   } 
+
+   await db.workspace.update({
+     where: {
+       id: workspaceId,
+     },
+     data: {
+       inviteCode: generateInviteCode(),
+     },
+   });
+}
