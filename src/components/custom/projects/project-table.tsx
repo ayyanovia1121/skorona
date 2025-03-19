@@ -2,7 +2,7 @@
 import { File, Project, Task, User } from '@prisma/client'
 import React from 'react'
 import { DataTable } from '../datatable/data-table';
-import { columns } from './column';
+import { columns, myTaskColumns } from './column';
 
 interface TaskProps extends Task {
     assignedTo: User;
@@ -17,3 +17,10 @@ const ProjectTable = ({tasks} : {tasks: TaskProps[]}) => {
 }
 
 export default ProjectTable
+
+export const MyTasksTable = ({tasks} : {tasks: TaskProps[]}) => {
+  return (
+    <DataTable columns={myTaskColumns} data={tasks as any} />
+  )
+}
+
