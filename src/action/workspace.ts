@@ -1,6 +1,6 @@
 'use server';
 
-import { CreateWorkspaceDataType } from "@/components/custom/create-workspace-form";
+import { CreateWorkspaceDataType } from "@/components/custom/workspace/create-workspace-form";
 import { db } from "@/lib/db/prisma";
 import { workspaceSchema } from "@/schema";
 import { userRequired } from "@/utils/auth/user/user-auth";
@@ -33,4 +33,33 @@ try {
     message: "An error occurred while creating the workspace."
    }
 }
+}
+
+export const updateWorkspace = async (workspaceId: string, data: CreateWorkspaceDataType) => {
+    const { user } = await userRequired();
+    const validatedData = workspaceSchema.parse(data);
+    const isUserMember = await db.workspaceMember.findUnique({
+        where: {
+            userId_workspaceId: {
+                userId: user.id,
+                workspaceId,
+            },
+        },
+    });
+
+    if (!isUserMember) {
+        throw new Error("You are not a member of this workspace");
+    }
+
+    await db.workspace.update({
+        where: {
+            id: workspaceId,
+        },
+        data: {
+            name: validatedData.name,
+            description: validatedData.description || "",
+        },
+    });
+
+    return {success: true};
 }
