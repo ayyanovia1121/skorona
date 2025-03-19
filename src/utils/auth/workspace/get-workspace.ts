@@ -31,5 +31,5 @@ export const getWorkspaceById = async (workspaceId: string) => {
     throw new Error("Workspace not found");
   }
 
-  return workspace;
+  return {data: workspace}
 };
